@@ -33,9 +33,21 @@ public class CommentRepositoryTest {
     }
 
     @Test
+    public void testFindByIdAndUserId() {
+        Optional<Comment> comment = commentRepository.findByGameObject_User_IdAndId(2L, 2L);
+        comment.ifPresent(value -> assertThat(value.getId(), equalTo(2L)));
+    }
+
+    @Test
     public void testFindAll() {
         List<Comment> comments = commentRepository.findAll();
         assertThat(comments, hasSize(7));
+    }
+
+    @Test
+    public void testFindAllByUserId() {
+        List<Comment> comments = commentRepository.findAllByGameObject_User_Id(2L);
+        assertThat(comments, hasSize(5));
     }
 
     @Test

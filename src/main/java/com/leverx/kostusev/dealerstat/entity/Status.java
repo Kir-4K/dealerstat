@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Status {
 
+    UNPROCESSED("Не обработан"),
     APPROVED("Одобренно"),
     DECLINED("Отказанно");
 
