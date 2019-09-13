@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 @Builder
 public class UserDto implements BaseDto<Long> {
 
+    private Long id;
+
     @NotBlank
     private String firstName;
 
@@ -31,7 +33,7 @@ public class UserDto implements BaseDto<Long> {
     @Email
     private String email;
 
-    private Long id;
     private LocalDateTime createdAt;
+
     private Role role;
 }

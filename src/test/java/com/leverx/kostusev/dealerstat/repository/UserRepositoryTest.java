@@ -36,6 +36,12 @@ public class UserRepositoryTest {
     }
 
     @Test
+    public void findByEmail() {
+        Optional<User> user = userRepository.findByEmail("admin@mail.com");
+        user.ifPresent(value -> assertThat(value.getEmail(), equalTo("admin@mail.com")));
+    }
+
+    @Test
     public void testFindAll() {
         List<User> users = userRepository.findAll();
         List<String> list = users.stream().map(User::getFirstName).collect(toList());

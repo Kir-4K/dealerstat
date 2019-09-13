@@ -1,8 +1,6 @@
 package com.leverx.kostusev.dealerstat.dto;
 
-import com.leverx.kostusev.dealerstat.entity.Game;
 import com.leverx.kostusev.dealerstat.entity.Status;
-import com.leverx.kostusev.dealerstat.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 public class GameObjectDto implements BaseDto<Long> {
 
+    private Long id;
+
     @NotBlank
     private String title;
 
@@ -24,11 +24,13 @@ public class GameObjectDto implements BaseDto<Long> {
     private String text;
 
     @NotBlank
-    private Game game;
+    private GameDto game;
 
-    private Long id;
     private Status status;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
-    private User user;
+
+    private UserDto user;
 }

@@ -29,16 +29,16 @@ public class GameObjectController {
 
     private final GameObjectService gameObjectService;
 
-    @GetMapping
-    public List<GameObjectDto> findAll() {
-        return gameObjectService.findAll();
-    }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<GameObjectDto> findById(@PathVariable("id") Long id) {
         return gameObjectService.findById(id)
                 .map(entity -> ResponseEntity.ok().body(entity))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public List<GameObjectDto> findAll() {
+        return gameObjectService.findAll();
     }
 
     @PostMapping

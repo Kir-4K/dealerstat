@@ -34,6 +34,13 @@ public class GameObjectService {
                 .collect(toList());
     }
 
+    public List<GameObjectDto> findAllByUserId(Long id) {
+        return gameObjectRepository.findAllByUser_Id(id)
+                .stream()
+                .map(gameObjectMapper::entityToDto)
+                .collect(toList());
+    }
+
     @Transactional
     public GameObject save(GameObjectDto gameObject) {
         return gameObjectRepository.save(gameObjectMapper.dtoToEntity(gameObject));

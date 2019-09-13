@@ -40,6 +40,12 @@ public class GameObjectRepositoryTest {
     }
 
     @Test
+    public void testFindAllByUser() {
+        List<GameObject> gameObjects = gameObjectRepository.findAllByUser_Id(2L);
+        assertThat(gameObjects, hasSize(3));
+    }
+
+    @Test
     public void testSave() {
         GameObject save = GameObject.builder()
                 .title("Меч смерти")

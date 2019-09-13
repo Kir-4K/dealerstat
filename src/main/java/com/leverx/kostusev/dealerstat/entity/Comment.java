@@ -36,7 +36,7 @@ public class Comment implements BaseEntity<Long> {
     @Column(name = "rating", nullable = false)
     private Integer rating;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "approved", nullable = false)

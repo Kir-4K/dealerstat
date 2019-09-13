@@ -1,8 +1,5 @@
 package com.leverx.kostusev.dealerstat.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.leverx.kostusev.dealerstat.entity.GameObject;
-import com.leverx.kostusev.dealerstat.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,9 +27,7 @@ public class CommentDto implements BaseDto<Long> {
 
     private Boolean approved;
 
-    @JsonIgnore
-    private User user;
+    private UserDto user;
 
-    @JsonIgnore
-    private GameObject gameObject;
+    private GameObjectDto gameObject;
 }

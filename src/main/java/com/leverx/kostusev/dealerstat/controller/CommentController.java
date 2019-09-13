@@ -1,7 +1,7 @@
 package com.leverx.kostusev.dealerstat.controller;
 
 import com.leverx.kostusev.dealerstat.dto.CommentDto;
-import com.leverx.kostusev.dealerstat.entity.GameObject;
+import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
 import com.leverx.kostusev.dealerstat.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class CommentController {
     @PostMapping(value = "/articles/{id}/comments")
     public CommentDto save(@PathVariable("id") Long id,
                            @Valid @RequestBody CommentDto comment) {
-        comment.setGameObject(GameObject.builder().id(id).build());
+        comment.setGameObject(GameObjectDto.builder().id(id).build());
         return commentService.save(comment);
     }
 

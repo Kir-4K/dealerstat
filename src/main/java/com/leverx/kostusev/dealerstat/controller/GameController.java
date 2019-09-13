@@ -22,23 +22,23 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping(value = "/game")
+@RequestMapping(value = "/games")
 public class GameController {
 
     private static final String[] IGNORE_PROPERTIES = {"id"};
 
     private final GameService gameService;
 
-    @GetMapping
-    public List<GameDto> findAll() {
-        return gameService.findAll();
-    }
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<GameDto> findById(@PathVariable("id") Long id) {
         return gameService.findById(id)
                 .map(entity -> ResponseEntity.ok().body(entity))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    public List<GameDto> findAll() {
+        return gameService.findAll();
     }
 
     @PostMapping
@@ -58,7 +58,7 @@ public class GameController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping(value = "{id}")
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         return gameService.findById(id)
                 .map(entity -> {

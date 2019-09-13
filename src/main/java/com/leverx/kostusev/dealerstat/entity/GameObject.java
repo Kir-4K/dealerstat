@@ -48,7 +48,7 @@ public class GameObject implements BaseEntity<Long> {
     private Status status;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
