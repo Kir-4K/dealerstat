@@ -2,6 +2,7 @@ package com.leverx.kostusev.dealerstat.controller;
 
 import com.leverx.kostusev.dealerstat.dto.CommentDto;
 import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
+import com.leverx.kostusev.dealerstat.mapper.CommentMapper;
 import com.leverx.kostusev.dealerstat.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class CommentController {
 
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "user", "gameObject"};
     private final CommentService commentService;
+    private final CommentMapper commentMapper;
 
     @GetMapping(value = "/users/{userId}/comments/{commentId}")
     public ResponseEntity<CommentDto> findByCommentIdAndUserId(@PathVariable("userId") Long userId,
@@ -44,7 +46,7 @@ public class CommentController {
     public CommentDto save(@PathVariable("id") Long id,
                            @Valid @RequestBody CommentDto comment) {
         comment.setGameObject(GameObjectDto.builder().id(id).build());
-        return commentService.save(comment);
+        return commentMapper.entityToDto(commentService.save(comment));
     }
 
     @PutMapping(value = "/articles/{articlesId}/comments/{commentId}")
@@ -54,7 +56,7 @@ public class CommentController {
         return commentService.findById(commentId)
                 .map(entity -> {
                     copyProperties(updatableComment, entity, IGNORE_PROPERTIES);
-                    CommentDto updated = commentService.save(entity);
+                    CommentDto updated = commentMapper.entityToDto(commentService.save(entity));
                     return ResponseEntity.ok().body(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());

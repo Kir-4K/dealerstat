@@ -1,5 +1,6 @@
 package com.leverx.kostusev.dealerstat.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leverx.kostusev.dealerstat.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,7 @@ public class UserDto implements BaseDto<Long> {
     @Email
     private String email;
 
+    @JsonFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
     private LocalDateTime createdAt;
 
     private Role role;

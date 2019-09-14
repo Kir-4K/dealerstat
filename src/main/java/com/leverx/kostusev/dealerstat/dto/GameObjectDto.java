@@ -1,5 +1,6 @@
 package com.leverx.kostusev.dealerstat.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.leverx.kostusev.dealerstat.entity.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,13 +24,14 @@ public class GameObjectDto implements BaseDto<Long> {
     @NotBlank
     private String text;
 
-    @NotBlank
     private GameDto game;
 
     private Status status;
 
+    @JsonFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
     private LocalDateTime updatedAt;
 
     private UserDto user;

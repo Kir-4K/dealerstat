@@ -4,50 +4,25 @@ import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
 import com.leverx.kostusev.dealerstat.entity.GameObject;
 import com.leverx.kostusev.dealerstat.mapper.GameObjectMapper;
 import com.leverx.kostusev.dealerstat.repository.GameObjectRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional(readOnly = true)
 @Service
-public class GameObjectService {
+public class GameObjectService extends CrudService<GameObject, GameObjectDto, GameObjectRepository, GameObjectMapper> {
 
-    private final GameObjectRepository gameObjectRepository;
-    private final GameObjectMapper gameObjectMapper;
-
-    public Optional<GameObjectDto> findById(Long id) {
-        return gameObjectRepository.findById(id)
-                .map(gameObjectMapper::entityToDto);
-    }
-
-    public List<GameObjectDto> findAll() {
-        return gameObjectRepository.findAll()
-                .stream()
-                .map(gameObjectMapper::entityToDto)
-                .collect(toList());
+    public GameObjectService(GameObjectRepository repository, GameObjectMapper mapper) {
+        super(repository, mapper);
     }
 
     public List<GameObjectDto> findAllByUserId(Long id) {
-        return gameObjectRepository.findAllByUser_Id(id)
+        return repository.findAllByUser_Id(id)
                 .stream()
-                .map(gameObjectMapper::entityToDto)
+                .map(mapper::entityToDto)
                 .collect(toList());
-    }
-
-    @Transactional
-    public GameObject save(GameObjectDto gameObject) {
-        return gameObjectRepository.save(gameObjectMapper.dtoToEntity(gameObject));
-    }
-
-    @Transactional
-    public void deleteById(Long id) {
-        gameObjectRepository.deleteById(id);
     }
 }

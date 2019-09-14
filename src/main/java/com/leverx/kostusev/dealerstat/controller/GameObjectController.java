@@ -2,6 +2,7 @@ package com.leverx.kostusev.dealerstat.controller;
 
 import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
 import com.leverx.kostusev.dealerstat.entity.GameObject;
+import com.leverx.kostusev.dealerstat.mapper.GameObjectMapper;
 import com.leverx.kostusev.dealerstat.service.GameObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class GameObjectController {
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "user", "game"};
 
     private final GameObjectService gameObjectService;
+    private final GameObjectMapper gameObjectMapper;
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<GameObjectDto> findById(@PathVariable("id") Long id) {
@@ -47,12 +49,12 @@ public class GameObjectController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<GameObject> update(@PathVariable Long id,
-                                             @Valid @RequestBody GameObjectDto updatableGameObject) {
+    public ResponseEntity<GameObjectDto> update(@PathVariable Long id,
+                                                @Valid @RequestBody GameObjectDto updatableGameObject) {
         return gameObjectService.findById(id)
                 .map(entity -> {
                     copyProperties(updatableGameObject, entity, IGNORE_PROPERTIES);
-                    GameObject updated = gameObjectService.save(entity);
+                    GameObjectDto updated = gameObjectMapper.entityToDto(gameObjectService.save(entity));
                     return ResponseEntity.ok().body(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());

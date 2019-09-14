@@ -1,5 +1,6 @@
 package com.leverx.kostusev.dealerstat.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class CommentDto implements BaseDto<Long> {
     @NotNull
     private Integer rating;
 
+    @JsonFormat(pattern = "dd.MM.yyyy в HH:mm:ss")
     private LocalDateTime createdAt;
 
     private Boolean approved;
