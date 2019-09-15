@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Transactional(readOnly = true)
-public class CrudService<E extends BaseEntity, D extends BaseDto, R extends JpaRepository<E, Long>, M extends BaseMapper<E, D>> {
+public class BaseService<E extends BaseEntity, D extends BaseDto, R extends JpaRepository<E, Long>, M extends BaseMapper<E, D>> {
 
     protected final R repository;
     protected final M mapper;

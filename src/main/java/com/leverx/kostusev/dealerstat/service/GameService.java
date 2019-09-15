@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
 @Service
-public class GameService extends CrudService<Game, GameDto, GameRepository, GameMapper> {
+public class GameService extends BaseService<Game, GameDto, GameRepository, GameMapper> {
 
     public GameService(GameRepository repository, GameMapper mapper) {
         super(repository, mapper);

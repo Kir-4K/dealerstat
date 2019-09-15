@@ -23,7 +23,11 @@ import static org.junit.Assert.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-@Sql("classpath:test_script.sql")
+@Sql(value = {
+        "classpath:drop_test_table.sql",
+        "classpath:create_test_table",
+        "classpath:insert_values_into_test_table.sql"
+})
 public class UserRepositoryTest {
 
     @Autowired

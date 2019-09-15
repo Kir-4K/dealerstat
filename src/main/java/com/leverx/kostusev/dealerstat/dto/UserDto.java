@@ -38,4 +38,6 @@ public class UserDto implements BaseDto<Long> {
     private LocalDateTime createdAt;
 
     private Role role;
+
+    private Boolean enabled;
 }

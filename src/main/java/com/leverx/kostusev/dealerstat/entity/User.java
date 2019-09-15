@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.redis.core.index.Indexed;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.CascadeType;
@@ -49,7 +48,6 @@ public class User implements BaseEntity<Long> {
     @Column(name = "password", nullable = false, length = 64)
     private String password;
 
-    @Indexed
     @Column(name = "email", nullable = false, length = 64, unique = true)
     private String email;
 
@@ -60,6 +58,9 @@ public class User implements BaseEntity<Long> {
     @Column(name = "role", nullable = false, length = 16)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "user_game", schema = "dealer_stat",

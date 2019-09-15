@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Service
-public class UserService extends CrudService<User, UserDto, UserRepository, UserMapper> {
+public class UserService extends BaseService<User, UserDto, UserRepository, UserMapper> {
 
     public UserService(UserRepository repository, UserMapper mapper) {
         super(repository, mapper);

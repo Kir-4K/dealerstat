@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 
 @Transactional(readOnly = true)
 @Service
-public class CommentService extends CrudService<Comment, CommentDto, CommentRepository, CommentMapper> {
+public class CommentService extends BaseService<Comment, CommentDto, CommentRepository, CommentMapper> {
 
     public CommentService(CommentRepository repo, CommentMapper mapper) {
         super(repo, mapper);

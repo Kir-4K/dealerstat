@@ -1,5 +1,6 @@
 package com.leverx.kostusev.dealerstat.entity;
 
+import com.leverx.kostusev.dealerstat.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,14 +19,14 @@ import java.util.concurrent.TimeUnit;
 @RedisHash(value = "confirmation_token")
 public class ConfirmationToken implements BaseEntity<Long> {
 
-    @TimeToLive(unit = TimeUnit.DAYS)
-    private static final long expiration = 1;
-
     @Id
     private Long id;
 
     @Indexed
-    private String externalId;
+    private String token;
 
-    private User user;
+    private UserDto user;
+
+    @TimeToLive(unit = TimeUnit.DAYS)
+    private Long expiration;
 }

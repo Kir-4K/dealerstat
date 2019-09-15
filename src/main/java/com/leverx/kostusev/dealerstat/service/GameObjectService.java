@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toList;
 
 @Transactional(readOnly = true)
 @Service
-public class GameObjectService extends CrudService<GameObject, GameObjectDto, GameObjectRepository, GameObjectMapper> {
+public class GameObjectService extends BaseService<GameObject, GameObjectDto, GameObjectRepository, GameObjectMapper> {
 
     public GameObjectService(GameObjectRepository repository, GameObjectMapper mapper) {
         super(repository, mapper);
