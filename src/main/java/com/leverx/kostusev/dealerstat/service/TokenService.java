@@ -36,4 +36,8 @@ public class TokenService {
     public void save(ConfirmationToken token) {
         tokenRepository.save(token);
     }
+
+    public void delete(ConfirmationToken token) {
+        tokenRepository.delete(token);
+    }
 }
