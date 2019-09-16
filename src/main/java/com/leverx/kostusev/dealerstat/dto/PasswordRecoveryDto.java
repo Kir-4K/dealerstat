@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Data
@@ -13,9 +14,10 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class PasswordRecoveryDto {
 
+    @NotBlank
     private String token;
 
-    @NotBlank
+    @Email
     private String email;
 
     @NotBlank
