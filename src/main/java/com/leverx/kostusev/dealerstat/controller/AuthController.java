@@ -12,6 +12,7 @@ import com.leverx.kostusev.dealerstat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,7 @@ public class AuthController {
     private final UserService userService;
     private final TokenService tokenService;
     private final EmailSenderService emailSenderService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     public void registration(@Valid @RequestBody UserDto user) {
@@ -50,6 +52,7 @@ public class AuthController {
         if (confirmationToken.isPresent()) {
             UserDto user = confirmationToken.get().getUser();
             user.setEnabled(true);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userService.save(user);
             tokenService.delete(confirmationToken.get());
         } else {
@@ -72,7 +75,7 @@ public class AuthController {
         Optional<ConfirmationToken> confirmationToken = tokenService.findByToken(passwordRecoveryDto.getToken());
         if (confirmationToken.isPresent()) {
             UserDto user = confirmationToken.get().getUser();
-            user.setPassword(passwordRecoveryDto.getPassword());
+            user.setPassword(passwordEncoder.encode(passwordRecoveryDto.getPassword()));
             userService.save(user);
             tokenService.delete(confirmationToken.get());
         } else {

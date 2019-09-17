@@ -21,8 +21,8 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping(value = "/users")
-public class UserController {
+@RequestMapping(value = "/admin/users")
+public class AdminUsersController {
 
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "role"};
     private final UserService userService;
