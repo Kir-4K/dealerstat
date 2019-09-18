@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Service
-public class UsrDetailsService implements UserDetailsService {
+public class DealerStatUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
 

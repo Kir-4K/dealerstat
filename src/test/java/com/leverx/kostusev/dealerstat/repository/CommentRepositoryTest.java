@@ -9,10 +9,10 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.LocalDateTime.now;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertThat;
@@ -59,7 +59,7 @@ public class CommentRepositoryTest {
         Comment save = Comment.builder()
                 .message("Норм так, че")
                 .rating(4)
-                .createdAt(LocalDateTime.now())
+                .createdAt(now())
                 .approved(true)
                 .build();
         commentRepository.save(save);

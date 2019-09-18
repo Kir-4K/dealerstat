@@ -1,9 +1,12 @@
 package com.leverx.kostusev.dealerstat.controller;
 
 import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
+import com.leverx.kostusev.dealerstat.dto.UserDto;
 import com.leverx.kostusev.dealerstat.entity.GameObject;
+import com.leverx.kostusev.dealerstat.exception.UserNotFoundException;
 import com.leverx.kostusev.dealerstat.mapper.GameObjectMapper;
 import com.leverx.kostusev.dealerstat.service.GameObjectService;
+import com.leverx.kostusev.dealerstat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +20,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @RestController
-@RequestMapping(value = "/post")
+@RequestMapping(value = "/articles")
 public class GameObjectController {
 
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "user", "game"};
 
+    private final UserService userService;
     private final GameObjectService gameObjectService;
     private final GameObjectMapper gameObjectMapper;
 
@@ -44,7 +49,9 @@ public class GameObjectController {
     }
 
     @PostMapping
-    public GameObject save(@Valid @RequestBody GameObjectDto gameObject) {
+    public GameObject save(@Valid @RequestBody GameObjectDto gameObject, Principal principal) {
+        UserDto user = userService.findByEmail(principal.getName()).orElseThrow(UserNotFoundException::new);
+        gameObject.setUser(user);
         return gameObjectService.save(gameObject);
     }
 

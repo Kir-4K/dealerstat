@@ -19,13 +19,12 @@ public class EmailSenderService {
     public void sendMail(ConfirmationToken confirmToken) throws MailException {
         String recipientAddress = confirmToken.getUser().getEmail();
         String subject = "Registration Confirmation";
-        String confirmationUrl = "http://localhost:8080/auth/confirm?token=" + confirmToken.getToken();
 
         SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo(recipientAddress);
         message.setSubject(subject);
-        message.setText("Click to confirm: " + confirmationUrl);
+        message.setText("Confirmation code: " + confirmToken.getToken());
 
         emailSender.send(message);
     }

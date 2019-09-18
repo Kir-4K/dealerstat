@@ -2,8 +2,10 @@ package com.leverx.kostusev.dealerstat.controller;
 
 import com.leverx.kostusev.dealerstat.dto.CommentDto;
 import com.leverx.kostusev.dealerstat.dto.GameObjectDto;
+import com.leverx.kostusev.dealerstat.exception.GameObjectNotFoundException;
 import com.leverx.kostusev.dealerstat.mapper.CommentMapper;
 import com.leverx.kostusev.dealerstat.service.CommentService;
+import com.leverx.kostusev.dealerstat.service.GameObjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
@@ -26,6 +29,7 @@ import static org.springframework.beans.BeanUtils.copyProperties;
 public class CommentController {
 
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "user", "gameObject"};
+    private final GameObjectService gameObjectService;
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
@@ -44,8 +48,9 @@ public class CommentController {
 
     @PostMapping(value = "/articles/{id}/comments")
     public CommentDto save(@PathVariable("id") Long id,
-                           @Valid @RequestBody CommentDto comment) {
-        comment.setGameObject(GameObjectDto.builder().id(id).build());
+                           @Valid @RequestBody CommentDto comment, Principal principal) {
+        GameObjectDto gameObject = gameObjectService.findById(id).orElseThrow(GameObjectNotFoundException::new);
+        comment.setGameObject(gameObject);
         return commentMapper.entityToDto(commentService.save(comment));
     }
 
