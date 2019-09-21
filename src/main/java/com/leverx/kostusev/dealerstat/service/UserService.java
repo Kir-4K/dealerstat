@@ -3,7 +3,6 @@ package com.leverx.kostusev.dealerstat.service;
 import com.leverx.kostusev.dealerstat.dto.CommentDto;
 import com.leverx.kostusev.dealerstat.dto.UserDto;
 import com.leverx.kostusev.dealerstat.entity.User;
-import com.leverx.kostusev.dealerstat.exception.TraderNoRatingException;
 import com.leverx.kostusev.dealerstat.mapper.UserMapper;
 import com.leverx.kostusev.dealerstat.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -39,8 +38,7 @@ public class UserService extends BaseService<User, UserDto, UserRepository, User
                 .filter(userDto -> TRADER.equals(userDto.getRole()))
                 .map(mapper::entityToDto)
                 .collect(toMap(Function.identity(),
-                        userDto -> getTraderRating(userDto.getId())
-                                .orElseThrow(TraderNoRatingException::new)));
+                        userDto -> getTraderRating(userDto.getId()).orElse(0D)));
     }
 
     public OptionalDouble getTraderRating(Long userId) {

@@ -6,6 +6,7 @@ import com.leverx.kostusev.dealerstat.exception.GameObjectNotFoundException;
 import com.leverx.kostusev.dealerstat.mapper.CommentMapper;
 import com.leverx.kostusev.dealerstat.service.CommentService;
 import com.leverx.kostusev.dealerstat.service.GameObjectService;
+import com.leverx.kostusev.dealerstat.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class CommentController {
 
     private static final String[] IGNORE_PROPERTIES = {"id", "createdAt", "user", "gameObject"};
     private final GameObjectService gameObjectService;
+    private final UserService userService;
     private final CommentService commentService;
     private final CommentMapper commentMapper;
 
@@ -48,8 +50,14 @@ public class CommentController {
 
     @PostMapping(value = "/articles/{id}/comments")
     public CommentDto save(@PathVariable("id") Long id,
-                           @Valid @RequestBody CommentDto comment, Principal principal) {
+                           @Valid @RequestBody CommentDto comment,
+                           Principal principal) {
         GameObjectDto gameObject = gameObjectService.findById(id).orElseThrow(GameObjectNotFoundException::new);
+
+        if (isNotEmpty(principal)) {
+            userService.findByEmail(principal.getName()).ifPresent(comment::setUser);
+        }
+
         comment.setGameObject(gameObject);
         return commentMapper.entityToDto(commentService.save(comment));
     }
@@ -57,8 +65,12 @@ public class CommentController {
     @PutMapping(value = "/articles/{articlesId}/comments/{commentId}")
     public ResponseEntity<CommentDto> update(@PathVariable("articlesId") Long articlesId,
                                              @PathVariable("commentId") Long commentId,
-                                             @Valid @RequestBody CommentDto updatableComment) {
+                                             @Valid @RequestBody CommentDto updatableComment,
+                                             Principal principal) {
         return commentService.findById(commentId)
+                .filter(comment -> isNotEmpty(comment.getUser()))
+                .filter(comment -> isNotEmpty(principal))
+                .filter(comment -> comment.getUser().getEmail().equals(principal.getName()))
                 .map(entity -> {
                     copyProperties(updatableComment, entity, IGNORE_PROPERTIES);
                     CommentDto updated = commentMapper.entityToDto(commentService.save(entity));
@@ -69,10 +81,12 @@ public class CommentController {
 
     @DeleteMapping(value = "/users/{userId}/comments/{commentId}")
     public ResponseEntity<?> delete(@PathVariable("userId") Long userId,
-                                    @PathVariable("commentId") Long commentId) {
+                                    @PathVariable("commentId") Long commentId,
+                                    Principal principal) {
         return commentService.findById(commentId)
                 .filter(comment -> isNotEmpty(comment.getUser()))
-                .filter(comment -> userId.equals(comment.getUser().getId()))
+                .filter(comment -> isNotEmpty(principal))
+                .filter(comment -> comment.getUser().getEmail().equals(principal.getName()))
                 .map(entity -> {
                     commentService.deleteById(commentId);
                     return ResponseEntity.ok().build();

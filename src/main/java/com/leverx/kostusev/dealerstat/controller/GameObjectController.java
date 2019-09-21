@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 import static org.springframework.beans.BeanUtils.copyProperties;
 
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -57,8 +58,11 @@ public class GameObjectController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<GameObjectDto> update(@PathVariable Long id,
-                                                @Valid @RequestBody GameObjectDto updatableGameObject) {
+                                                @Valid @RequestBody GameObjectDto updatableGameObject,
+                                                Principal principal) {
         return gameObjectService.findById(id)
+                .filter(gameObject -> isNotEmpty(principal))
+                .filter(gameObject -> gameObject.getUser().getEmail().equals(principal.getName()))
                 .map(entity -> {
                     copyProperties(updatableGameObject, entity, IGNORE_PROPERTIES);
                     GameObjectDto updated = gameObjectMapper.entityToDto(gameObjectService.save(entity));
@@ -68,8 +72,10 @@ public class GameObjectController {
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id, Principal principal) {
         return gameObjectService.findById(id)
+                .filter(gameObject -> isNotEmpty(principal))
+                .filter(gameObject -> gameObject.getUser().getEmail().equals(principal.getName()))
                 .map(entity -> {
                     gameObjectService.deleteById(id);
                     return ResponseEntity.ok().build();
